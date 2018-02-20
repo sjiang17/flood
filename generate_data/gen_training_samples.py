@@ -4,6 +4,7 @@ from my_voc import my_voc
 import numpy as np
 import os
 import sys
+import shutil
 
 def box_area(xmin, ymin, xmax, ymax):
 	return (float(xmax) - float(xmin)) * (float(ymax) - float(ymin))
@@ -26,16 +27,20 @@ def black_patch(img, annot):
 	# random mask black patch
 	boxes = annot['boxes']
 	gt_classes = annot['gt_classes']
+	person_exist = False
 	for (box, cls) in zip(boxes, gt_classes):
 		if not cls == 15:
 			continue
+		person_exist = True
 		if random.random() > 0.0:
 			mask = mask_img(box)
 			cv2.rectangle(img, (mask[0], mask[1]), (mask[2], mask[3]), (104,117,123), -1)
-	return 
+	return person_exist
 	# return masked image
 
 if __name__ == '__main__':
+	r_size = 512
+
 	random.seed(100)
 	voc_dir = os.path.join(sys.path[0], '../dataset/VOC2012')
 	voc = my_voc(voc_dir)
@@ -46,17 +51,24 @@ if __name__ == '__main__':
 	assert len(img_list) == len(annot_list)
 	# iterate every image
 	for ix, (img_file, annot_file) in enumerate(zip(img_list, annot_list)):
-		if ix >= 20:
-			break
+		if ix % 200 == 0:
+			print "processed {} out of {} images".format(ix, len(img_list))
 		img = cv2.imread(img_file)
+		origin_img = cv2.resize(img, (r_size, r_size), interpolation=cv2.INTER_CUBIC)
 		# get annotations 
 		annot = voc._read_annot(annot_file)
 		# generate black patched image
-		black_patch(img, annot)
-
-		save_file = os.path.join(os.path.join(voc_dir, 'masked'), os.path.basename(img_file))
-		# save_file = os.path.join(sys.path[0], os.path.basename(img_file))
-		cv2.imwrite(save_file, img)
+		person_exist = black_patch(img, annot)
+		if person_exist:
+			# save original image to folder 0
+			origin_save_file = os.path.join(os.path.join(voc_dir, '0'), os.path.basename(img_file))
+			cv2.imwrite(origin_save_file, origin_img)
+			# shutil.copyfile(img_file, origin_save_file)
+			# save masked image in folder 1
+			save_file = os.path.join(os.path.join(voc_dir, '1'), os.path.basename(img_file))
+			# save_file = os.path.join(sys.path[0], os.path.basename(img_file))
+			img = cv2.resize(img, (r_size, r_size), interpolation=cv2.INTER_CUBIC)
+			cv2.imwrite(save_file, img)
 
 	
 
