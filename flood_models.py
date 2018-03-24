@@ -199,7 +199,7 @@ def build_UNet(type='UNet1', use_bias=True, use_dropout=False, is_pretrained=Fal
 		# 	print kk
 		# exit()
 		if type == 'UNet1':
-			model.load_state_dict(torch.load('./save/conv4_lr0.01_SGD_dropout/transformer_conv4_lr0.01_SGD_dropout_200.pth'))
+			model.load_state_dict(torch.load('./models/transformer_conv4_lr0.01_SGD_dropout_200.pth'))
 		elif type == 'UNet2':
 			model.load_state_dict(torch.load('./save/UNet2_conv4_lr0.0001_SGD_wd/transformer_UNet2_conv4_lr0.0001_SGD_wd_26.pth'))
 	return model
