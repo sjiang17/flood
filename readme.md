@@ -51,9 +51,15 @@ It will compile all the modules you need, including NMS, ROI_Pooing, ROI_Align a
 
 
 ### Data Preparation
-Download training data on 
+Download training data on [google drive](https://)</br>
+extract `dataset.tar.gz` and put the `dataset` folder at `./flood/`
 
-Download test data on 
+Download test data on [google drive]()</br>
+extract `VOCdevkit2007.tar.gz` and put the `VOCdevkit2007` folder at `./flood/pytorch-faster-rcnn/data/`
+
+Download trained models on [google drive]()</br>
+put the `models` folder at `./flood/`
+
 
 ## Train
 
@@ -61,7 +67,7 @@ Download test data on
 cd flood 
 python train_adv.py
 ```
-The models will be saved in flood/save
+The models will be saved at `flood/save`
 
 ## Test
 
