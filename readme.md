@@ -35,13 +35,13 @@ More details about setting the architecture can be found [here](https://develope
 
 Install all the python dependencies using pip:
 ```
-pip install -r pytorch-faster-rcnn/requirements.txt
+pip install -r flood/pytorch-faster-rcnn/requirements.txt
 ```
 
 Compile the cuda dependencies using following simple commands:
 
 ```
-cd pytorch-faster-rcnn/lib
+cd flood/pytorch-faster-rcnn/lib
 sh make.sh
 ```
 
